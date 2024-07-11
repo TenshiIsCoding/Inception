@@ -1,24 +1,11 @@
-FROM debian:buster
-RUN apt update -y && apt upgrade -y
-RUN apt install -y mariadb-server
-RUN apt install -y mariadb-server mariadb-client
+FROM debian:11
 
-COPY conf/mydb.conf /etc/mysql/mariadb.conf.d/mydb.conf
 
-RUN	mkdir -p /var/lib/mysql /var/run/mysqld
-RUN	chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
-RUN	chmod 777 /var/run/mysqld
+RUN apt update -y && apt upgrade -y && apt install -y mariadb-server  mariadb-client
 
-# ENV MYSQL_DATABASE=your_database
-# ENV MYSQL_USER=your_user
-# ENV MYSQL_PASSWORD=your_password
-# ENV MYSQL_ROOT_PASSWORD=12345
-
-ARG MYSQL_DATABASE
-ARG MYSQL_USER
-ARG MYSQL_PASSWORD
 
 COPY tools/script.sh /script.sh
 RUN chmod +x script.sh
-ENTRYPOINT ["bash", "/script.sh"]
-CMD ["mysqld_safe"]
+
+
+ENTRYPOINT ["./script.sh"]
