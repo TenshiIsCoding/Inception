@@ -8,13 +8,13 @@ services:
     image:  mariadb
     restart:  always
     env_file: .env
+    ports:
+      - 3306:3306
     volumes:
       - mariadb:/var/lib/mysql
 
   nginx:
     container_name: nginx
-    # depends_on:
-    #   - wordpress
     networks:
       - inception
     build:
@@ -36,9 +36,9 @@ services:
     build:
       context:  requirements/wordpress
   #     args:
-  #       - MYSQL_DATABASE
-  #       - MYSQL_USER
-  #       - MYSQL_PASSWORD
+  #       - SQL_DATABASE
+  #       - SQL_USER
+  #       - SQL_PASSWORD
   #       - DOMAIN_NAME
   #       - SITE_TITLE
   #       - ADMIN_USER
@@ -52,9 +52,9 @@ services:
       - wordpress:/var/www/wordpress
     env_file: .env
     restart:  always
-    # expose:
-    #   - "9000"
-
+    ports:
+      - 9000:9000
+   
 networks:
     inception:
       driver: bridge
